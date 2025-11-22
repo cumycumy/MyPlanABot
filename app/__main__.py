@@ -18,9 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 bot = Bot(
-	token=(os.environ.get('BOT_SECRET')
-		if os.environ.get('AMVERE', False)
-		else os.environ.get('MyPlanABot')),
+	token=(os.environ['BOT_SECRET']),
 	default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=MemoryStorage())
 dp.include_router(routers.default_router)
