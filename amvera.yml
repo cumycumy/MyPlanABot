@@ -5,9 +5,5 @@ meta:
     version: 3.13
 build:
   requirementsPath: requirements.txt
-  requirements: requirements.txt
 run:
-  scriptName: python -m app
   command: python -m app
-  container:
-    cmd: python -m app
