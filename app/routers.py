@@ -6,77 +6,70 @@ from aiogram.filters import (
 )
 from aiogram import Router, F
 
-import os
-
+from . import properties
 from . import keyboards
 from . import filters
-from . import book
 
 
-default_router = Router()
+DEFAULT_ROUTER = Router()
 
 
-@default_router.message(CommandStart())
-async def default_start(
+@DEFAULT_ROUTER.message(properties
+	.DEFAULT_COMMAND_START.command)
+async def default_command_start(
 		message: Message,
 		command: CommandObject):
 	await message.answer(
-		book.DEFAULT_START_ANSWER.format(
-			username=message.from_user.first_name),
-		reply_markup=keyboards.start_keyboard)
+		(properties.DEFAULT_COMMAND_START.answer
+			.format(username=message.from_user.first_name)
+		), reply_markup=keyboards.start_keyboard)
 
-@default_router.message(Command('help'))
-async def default_help(
+@DEFAULT_ROUTER.callback_query(properties
+	.DEFAULT_CALLBACK_START.callback)
+async def default_callback_start(callback: CallbackQuery):
+	await callback.message.edit_text(
+		(properties.DEFAULT_CALLBACK_START.answer
+			.format(
+				username=callback.message.from_user.first_name)
+		), reply_markup=keyboards.start_keyboard)
+
+
+@DEFAULT_ROUTER.message(properties
+	.DEFAULT_COMMAND_HELP.command)
+async def default_command_help(
 		message: Message,
 		command: CommandObject):
-	if command.args:
-		answer = [book.DEFAULT_HELP_ANSWER]
-		for arg in command.args.split(' '):
-			match arg:
-				case 'start':
-					answer.append(book.DEFAULT_HELP_COMMAND_START_ANSWER)
-				case 'help':
-					answer.append(book.DEFAULT_HELP_COMMAND_HELP_ANSWER)
-				case 'menu':
-					answer.append(book.DEFAULT_HELP_COMMAND_MENU_ANSWER)
-	else:
-		answer = [
-			book.DEFAULT_HELP_ANSWER,
-			book.DEFAULT_HELP_COMMAND_START_ANSWER,
-			book.DEFAULT_HELP_COMMAND_HELP_ANSWER,
-			book.DEFAULT_HELP_COMMAND_MENU_ANSWER,
-		]
-	await message.answer(''.join(answer))
+	answer = await properties.COMMAND_MATCH(
+		properties.DEFAULT_COMMANDS, command.args.split(' '))
+	await message.answer(answer)
+
+@DEFAULT_ROUTER.callback_query(properties
+	.DEFAULT_CALLBACK_HELP.callback)
+async def default_command_help(callback: CallbackQuery):
+	await message.answer(DEFAULT_CALLBACK_HELP.answer)
 
 
-@default_router.message(Command('menu'))
-async def default_menu(
+@DEFAULT_ROUTER.message(properties
+	.DEFAULT_COMMAND_MENU.command)
+async def default_command_menu(
 		message: Message,
 		command: CommandObject):
 	await message.answer(
 		book.DEFAULT_MENU_ANSWER,
 		reply_markup=keyboards.menu_keyboard)
 
-@default_router.callback_query(F.data == 'menu')
+@DEFAULT_ROUTER.callback_query(F.data == 'menu')
 async def default_callback_menu(callback: CallbackQuery):
 	await callback.message.edit_text(
 		book.DEFAULT_MENU_ANSWER,
 		reply_markup=keyboards.menu_keyboard)
 
 
-@default_router.message(Command('profile'))
-async def default_profile(
-		message: Message,
-		command: CommandObject):
-	await message.answer(
-		book.DEFAULT_PROFILE_GET_ANSWER,
-		reply_markup=keyboards.profile_keyboard)
+ROUTERS = [
+	DEFAULT_ROUTER,
+]
 
-@default_router.callback_query(F.data == 'profile_get')
-async def default_callback_profile_get(callback: CallbackQuery):
-	await callback.message.edit_text(
-		book.DEFAULT_PROFILE_GET_ANSWER,
-		reply_markup=keyboards.profile_keyboard)
-
-
-__all__ = ['default_router']
+__all__ = [
+	'ROUTERS',
+	'DEFAULT_ROUTER',
+]

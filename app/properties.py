@@ -1,0 +1,102 @@
+from aiogram.utils.magic_filter import MagicFilter
+from aiogram.filters import Command, BaseFilter
+
+from dataclasses import dataclass
+
+from . import book
+
+
+@dataclass(frozen=True, order=True)
+class CommandProperties:
+	name:			str
+	description:	str
+	command:		BaseFilter | MagicFilter
+	answer:			str
+
+DEFAULT_COMMAND_START = CommandProperties(
+	book.DEFAULT_START_NAME,
+	book.DEFAULT_START_DESCRIPTION,
+	book.DEFAULT_START_COMMAND,
+	book.DEFAULT_START_ANSWER)
+DEFAULT_COMMAND_HELP = CommandProperties(
+	book.DEFAULT_HELP_NAME,
+	book.DEFAULT_HELP_DESCRIPTION,
+	book.DEFAULT_HELP_COMMAND,
+	book.DEFAULT_HELP_ANSWER)
+DEFAULT_COMMAND_MENU = CommandProperties(
+	book.DEFAULT_MENU_NAME,
+	book.DEFAULT_MENU_DESCRIPTION,
+	book.DEFAULT_MENU_COMMAND,
+	book.DEFAULT_MENU_ANSWER)
+DEFAULT_COMMAND_SCHEDULES = CommandProperties(
+	book.DEFAULT_SCHEDULES_NAME,
+	book.DEFAULT_SCHEDULES_DESCRIPTION,
+	book.DEFAULT_SCHEDULES_COMMAND,
+	book.DEFAULT_SCHEDULES_ANSWER)
+DEFAULT_COMMAND_ROUTINES = CommandProperties(
+	book.DEFAULT_ROUTINES_NAME,
+	book.DEFAULT_ROUTINES_DESCRIPTION,
+	book.DEFAULT_ROUTINES_COMMAND,
+	book.DEFAULT_ROUTINES_ANSWER)
+DEFAULT_COMMAND_SCHEDULE = CommandProperties(
+	book.DEFAULT_SCHEDULE_NAME,
+	book.DEFAULT_SCHEDULE_DESCRIPTION,
+	book.DEFAULT_SCHEDULE_COMMAND,
+	book.DEFAULT_SCHEDULE_ANSWER)
+
+DEFAULT_COMMANDS = sorted([
+	DEFAULT_COMMAND_START,
+	DEFAULT_COMMAND_HELP,
+	DEFAULT_COMMAND_MENU,
+	DEFAULT_COMMAND_SCHEDULES,
+	DEFAULT_COMMAND_ROUTINES,
+	DEFAULT_COMMAND_SCHEDULE,
+])
+
+async def COMMAND_MATCH(
+		commands: list[CommandProperties],
+		args: list[str],
+) -> CommandProperties:
+	pass
+
+
+@dataclass(frozen=True, order=True)
+class CallbackProperties:
+	callback: 	BaseFilter | MagicFilter
+	answer: 	str
+
+DEFAULT_CALLBACK_START = CallbackProperties(
+	book.DEFAULT_START_CALLBACK,
+	book.DEFAULT_START_ANSWER,
+)
+DEFAULT_CALLBACK_HELP = CallbackProperties(
+	book.DEFAULT_HELP_CALLBACK,
+	book.DEFAULT_HELP_ANSWER,
+)
+DEFAULT_CALLBACK_MENU = CallbackProperties(
+	book.DEFAULT_MENU_CALLBACK,
+	book.DEFAULT_MENU_ANSWER,
+)
+DEFAULT_CALLBACK_SCHEDULES = CallbackProperties(
+	book.DEFAULT_SCHEDULES_CALLBACK,
+	book.DEFAULT_SCHEDULES_ANSWER,
+)
+DEFAULT_CALLBACK_ROUTINES = CallbackProperties(
+	book.DEFAULT_ROUTINES_CALLBACK,
+	book.DEFAULT_ROUTINES_ANSWER,
+)
+DEFAULT_CALLBACK_SCHEDULE = CallbackProperties(
+	book.DEFAULT_SCHEDULE_CALLBACK,
+	book.DEFAULT_SCHEDULE_ANSWER,
+)
+
+
+__all__ = [
+	'CommandProperties',
+	'DEFAULT_START',
+	'DEFAULT_HELP',
+	'DEFAULT_MENU',
+	'DEFAULT_SCHEDULES',
+	'DEFAULT_ROUTINES',
+	'DEFAULT_SCHEDULE',
+]

@@ -7,8 +7,8 @@ import logging
 import asyncio
 import os
 
+from . import BOT_MAIN
 from . import routers
-from . import bot_main
 
 
 logging.basicConfig(
@@ -21,9 +21,11 @@ bot = Bot(
 	token=(os.environ['BOT_SECRET']),
 	default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher(storage=MemoryStorage())
-dp.include_router(routers.default_router)
+
+for router in routers.ROUTERS:
+	dp.include_router(router)
 
 try:
-	asyncio.run(bot_main(bot, dp))
+	asyncio.run(BOT_MAIN(bot, dp))
 except KeyboardInterrupt:
 	pass
