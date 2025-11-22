@@ -6,5 +6,7 @@ meta:
 build:
   requirementsPath: requirements.txt
 run:
-  cmd: ["python", "-m", "app"]
-  persistenceMount: app/data
+  scriptName: python -m app
+  command: python -m app
+  container:
+    cmd: python -m app
