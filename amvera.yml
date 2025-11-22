@@ -2,9 +2,9 @@ meta:
   environment: python
   toolchain:
     name: pip
-    version: 3.12
+    version: 3.13
 build:
   requirementsPath: requirements.txt
 run:
-  command: "python -m app"
+  cmd: ["python", "-m", "app"]
   persistenceMount: app/data
